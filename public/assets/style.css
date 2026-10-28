@@ -310,3 +310,5 @@ footer li { display: flex; gap: 10px; align-items: center; }
   .call-btn svg.i { display: block; }
   .call-btn .lbl { display: none; }
 }
+
+.works-count { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 4em; text-align: center; }

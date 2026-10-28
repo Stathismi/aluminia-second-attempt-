@@ -67,6 +67,8 @@
     var track = $("track");
     if (!track) return;
     var dots = $("dots"), prev = $("prev"), next = $("next");
+    var counter = $("works-count");
+    if (!counter) { counter = el("span", { id: "works-count", class: "works-count" }); counter.hidden = true; dots.after(counter); }
     items = (items || []).filter(function (i) { return i && i.image; });
 
     // On area pages show the projects from that area first (if any).
@@ -87,11 +89,18 @@
       return;
     }
 
-    items.forEach(function (it) {
+    items.forEach(function (it, n) {
       var meta = [it.location, it.date].filter(Boolean).join(", ");
       var alt = [it.title || "Έργο κουφωμάτων", it.location].filter(Boolean).join(" - ");
+      var img = el("img", { src: it.image, alt: alt, decoding: "async" });
+      if (n > 3) img.setAttribute("loading", "lazy");
+      // a photo that fails to load is removed instead of leaving an empty card
+      img.addEventListener("error", function () {
+        var fig = img.closest("figure");
+        if (fig && track.children.length > 1) { fig.remove(); render(); }
+      });
       track.appendChild(el("figure", { class: "work" }, [
-        el("img", { src: it.image, alt: alt, loading: "lazy" }),
+        img,
         (it.title || meta) ? el("figcaption", {}, [
           it.title ? el("strong", { text: it.title }) : null,
           meta ? el("span", { text: meta }) : null
@@ -125,7 +134,9 @@
         }
       }
       Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute("aria-current", k === i ? "true" : "false"); });
-      prev.hidden = next.hidden = dots.hidden = n < 2;
+      prev.hidden = next.hidden = n < 2;
+      dots.hidden = n < 2 || n > 10; // many photos: arrows only, no row of dots
+      if (counter) { counter.hidden = n <= 10; counter.textContent = (i + 1) + " / " + n; }
     }
     function go(i) {
       var n = pages();
