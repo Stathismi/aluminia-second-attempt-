@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Διαχείριση έργων · Μήτσκας Κουφώματα</title>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #F9FAFB; --secondary: #EAEDF0; --card: #FFFFFF; --fg: #1D2530; --muted: #5F6C7E; --border: #D9DFE6;
+  --navy: #1D3658; --red: #C52020; --red-dark: #A51A1A; --green: #1E7A43; --white: #FFFFFF;
+  --shadow: 0 1px 3px rgba(29,37,48,.08), 0 4px 16px rgba(29,37,48,.06);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 "Roboto", "Helvetica Neue", Arial, sans-serif; }
+.wrap { max-width: 980px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { background: var(--navy); color: var(--white); padding-top: env(safe-area-inset-top, 0px); }
+header .wrap { display: flex; align-items: center; gap: 12px; min-height: 64px; flex-wrap: wrap; padding-block: 8px; }
+.mark { width: 36px; height: 36px; border-radius: 6px; background: var(--white); color: var(--navy); display: grid; place-items: center; font-weight: 700; font-size: 18px; flex: none; }
+header h1 { font-size: 17px; margin: 0; font-weight: 700; }
+header nav { margin-left: auto; display: flex; gap: 8px; }
+header a, header button { color: var(--white); font: 500 14px inherit; font-family: inherit; background: transparent; border: 1px solid rgba(255,255,255,.4); border-radius: 6px; padding: 8px 12px; text-decoration: none; cursor: pointer; }
+main { padding-block: 28px 64px; display: grid; gap: 24px; }
+.card { background: var(--card); border-radius: 10px; box-shadow: var(--shadow); padding: 22px; display: grid; gap: 16px; }
+.card h2 { margin: 0; font-size: 19px; }
+.muted { color: var(--muted); font-size: 14.5px; margin: 0; }
+label { display: grid; gap: 6px; font-size: 14px; font-weight: 500; }
+input[type=text], input[type=password] { width: 100%; height: 44px; padding: 0 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font: 16px inherit; font-family: inherit; }
+input:focus { outline: 2px solid var(--navy); border-color: var(--navy); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 6px; font: 500 15px inherit; font-family: inherit; border: 1px solid transparent; cursor: pointer; text-decoration: none; }
+.btn-red { background: var(--red); color: var(--white); }
+.btn-red:hover { background: var(--red-dark); }
+.btn-navy { background: var(--navy); color: var(--white); }
+.btn-outline { background: var(--card); color: var(--fg); border-color: var(--border); }
+.btn-outline:hover { border-color: var(--navy); }
+.btn[disabled] { opacity: .5; cursor: default; }
+.btn-sm { min-height: 36px; padding: 0 12px; font-size: 14px; }
+:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+.login { max-width: 420px; margin: 40px auto 0; }
+.err { color: var(--red); font-size: 14.5px; font-weight: 500; margin: 0; min-height: 1.4em; }
+.picker { border: 2px dashed var(--border); border-radius: 10px; padding: 28px 16px; text-align: center; display: grid; gap: 10px; justify-items: center; cursor: pointer; background: var(--bg); }
+.picker:hover, .picker.drag { border-color: var(--navy); background: #F1F4F8; }
+.picker strong { font-size: 17px; }
+.picker input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.pending, .gallery { display: grid; gap: 12px; }
+.row { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 14px; align-items: start; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); }
+.row img { width: 96px; height: 96px; object-fit: cover; border-radius: 6px; background: var(--secondary); }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; min-width: 0; }
+.fields .wide { grid-column: 1 / -1; }
+@media (max-width: 560px) { .fields { grid-template-columns: minmax(0, 1fr); } .row { grid-template-columns: 72px minmax(0, 1fr); } .row img { width: 72px; height: 72px; } }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.status { font-size: 14px; color: var(--muted); }
+.status.ok { color: var(--green); font-weight: 500; }
+.status.bad { color: var(--red); font-weight: 500; }
+.confirm { background: var(--red); color: var(--white); border-color: var(--red); }
+.empty { text-align: center; padding: 28px; color: var(--muted); border: 1px dashed var(--border); border-radius: 8px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--fg); color: var(--white); padding: 12px 18px; border-radius: 8px; font-size: 15px; box-shadow: var(--shadow); max-width: calc(100% - 32px); }
+.stack { display: grid; gap: 24px; }
+.count { font-weight: 400; color: var(--muted); font-size: 15px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <span class="mark">M</span>
+    <h1>Διαχείριση έργων</h1>
+    <nav>
+      <a href="/#erga" target="_blank" rel="noopener">Δείτε το σάιτ</a>
+      <button id="logout" type="button" hidden>Αποσύνδεση</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <form class="card login" id="login-form" hidden>
+    <h2>Σύνδεση</h2>
+    <p class="muted">Βάλτε τον κωδικό διαχείρισης για να ανεβάσετε φωτογραφίες στα «Έργα Μας».</p>
+    <label for="pw">Κωδικός<input id="pw" type="password" autocomplete="current-password" required></label>
+    <button class="btn btn-red" type="submit">Σύνδεση</button>
+    <p class="err" id="login-err" role="alert"></p>
+  </form>
+
+  <section id="app" class="stack" hidden>
+    <div class="card">
+      <h2>Νέες φωτογραφίες</h2>
+      <label class="picker" id="picker" for="files">
+        <input id="files" type="file" accept="image/*" multiple>
+        <strong>Επιλέξτε φωτογραφίες</strong>
+        <span class="muted">Από το κινητό ή τον υπολογιστή. Μπορείτε να διαλέξετε πολλές μαζί.</span>
+      </label>
+      <div class="pending" id="pending"></div>
+      <div class="actions" id="upload-bar" hidden>
+        <button class="btn btn-red" id="upload" type="button">Ανέβασμα</button>
+        <button class="btn btn-outline" id="clear" type="button">Ακύρωση</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Φωτογραφίες στο σάιτ <span class="count" id="count"></span></h2>
+      <p class="muted">Η πρώτη φωτογραφία εμφανίζεται πρώτη στο καρουζέλ. Αλλάξτε σειρά με τα βελάκια.</p>
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function () {
+  "use strict";
+  var KEY = "mk-admin-token";
+  var token = "";
+  try { token = localStorage.getItem(KEY) || ""; } catch (e) {}
+  var $ = function (id) { return document.getElementById(id); };
+  var items = [];
+  var pending = [];
+
+  function toast(msg) {
+    var t = $("toast"); t.textContent = msg; t.hidden = false;
+    clearTimeout(toast.t); toast.t = setTimeout(function () { t.hidden = true; }, 3000);
+  }
+  function api(path, opts) {
+    opts = opts || {};
+    opts.headers = opts.headers || {};
+    if (token) opts.headers.Authorization = "Bearer " + token;
+    return fetch(path, opts).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) {
+        if (r.status === 401 && path !== "/api/login") { logout(); throw new Error("Συνδεθείτε ξανά."); }
+        if (!r.ok) throw new Error(d.error || "Κάτι πήγε στραβά (" + r.status + ").");
+        return d;
+      });
+    });
+  }
+  function el(tag, attrs, kids) {
+    var n = document.createElement(tag);
+    for (var k in attrs || {}) { if (k === "text") n.textContent = attrs[k]; else n.setAttribute(k, attrs[k]); }
+    (kids || []).forEach(function (c) { if (c) n.appendChild(c); });
+    return n;
+  }
+
+  function showLogin() { $("login-form").hidden = false; $("app").hidden = true; $("logout").hidden = true; $("pw").focus(); }
+  function showApp() { $("login-form").hidden = true; $("app").hidden = false; $("logout").hidden = false; load(); }
+  function logout() { token = ""; try { localStorage.removeItem(KEY); } catch (e) {} showLogin(); }
+
+  $("login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    $("login-err").textContent = "";
+    api("/api/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: $("pw").value }) })
+      .then(function (d) {
+        token = d.token; try { localStorage.setItem(KEY, token); } catch (e) {}
+        $("pw").value = ""; showApp();
+      })
+      .catch(function (err) { $("login-err").textContent = err.message; });
+  });
+  $("logout").addEventListener("click", logout);
+
+  /* ---------- current photos ---------- */
+  function load() {
+    api("/api/erga").then(function (d) { items = d.items || []; renderGallery(); })
+      .catch(function (err) { toast(err.message); });
+  }
+  function saveOrder() {
+    return api("/api/erga", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ order: items.map(function (i) { return i.id; }) }) })
+      .then(function () { toast("Η σειρά αποθηκεύτηκε"); }).catch(function (err) { toast(err.message); load(); });
+  }
+  function renderGallery() {
+    var g = $("gallery"); g.innerHTML = "";
+    $("count").textContent = items.length ? "(" + items.length + ")" : "";
+    if (!items.length) {
+      g.appendChild(el("p", { class: "empty", text: "Δεν έχετε ανεβάσει ακόμα φωτογραφίες. Μέχρι τότε το σάιτ δείχνει τις 4 φωτογραφίες δείγματος." }));
+      return;
+    }
+    items.forEach(function (it, i) {
+      var title = el("input", { type: "text", value: it.title || "", placeholder: "Τίτλος, π.χ. Συρόμενη σε μπαλκόνι", "aria-label": "Τίτλος" });
+      var loc = el("input", { type: "text", value: it.location || "", placeholder: "Περιοχή, π.χ. Έδεσσα", "aria-label": "Περιοχή" });
+      var save = el("button", { class: "btn btn-navy btn-sm", type: "button", text: "Αποθήκευση" }); save.hidden = true;
+      var up = el("button", { class: "btn btn-outline btn-sm", type: "button", "aria-label": "Πιο πάνω", text: "↑" });
+      var down = el("button", { class: "btn btn-outline btn-sm", type: "button", "aria-label": "Πιο κάτω", text: "↓" });
+      var del = el("button", { class: "btn btn-outline btn-sm", type: "button", text: "Διαγραφή" });
+      up.disabled = i === 0; down.disabled = i === items.length - 1;
+      [title, loc].forEach(function (f) { f.addEventListener("input", function () { save.hidden = false; }); });
+      save.addEventListener("click", function () {
+        save.disabled = true;
+        api("/api/erga", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: it.id, title: title.value, location: loc.value }) })
+          .then(function (d) { it.title = d.item.title; it.location = d.item.location; save.hidden = true; save.disabled = false; toast("Αποθηκεύτηκε"); })
+          .catch(function (err) { save.disabled = false; toast(err.message); });
+      });
+      up.addEventListener("click", function () { items.splice(i - 1, 0, items.splice(i, 1)[0]); renderGallery(); saveOrder(); });
+      down.addEventListener("click", function () { items.splice(i + 1, 0, items.splice(i, 1)[0]); renderGallery(); saveOrder(); });
+      var armed = false, timer;
+      del.addEventListener("click", function () {
+        if (!armed) {
+          armed = true; del.textContent = "Σίγουρα; Πατήστε ξανά"; del.classList.add("confirm");
+          timer = setTimeout(function () { armed = false; del.textContent = "Διαγραφή"; del.classList.remove("confirm"); }, 4000);
+          return;
+        }
+        clearTimeout(timer); del.disabled = true;
+        api("/api/erga?id=" + encodeURIComponent(it.id), { method: "DELETE" })
+          .then(function () { items = items.filter(function (x) { return x.id !== it.id; }); renderGallery(); toast("Η φωτογραφία διαγράφηκε"); })
+          .catch(function (err) { del.disabled = false; toast(err.message); });
+      });
+      g.appendChild(el("div", { class: "row" }, [
+        el("img", { src: it.image, alt: it.title || "Φωτογραφία έργου", loading: "lazy" }),
+        el("div", { class: "fields" }, [title, loc, el("div", { class: "actions wide" }, [save, up, down, del])])
+      ]));
+    });
+  }
+
+  /* ---------- new photos ---------- */
+  function resize(file) {
+    var MAX = 1920;
+    var draw = function (src, w, h) {
+      var s = Math.min(1, MAX / Math.max(w, h));
+      var c = document.createElement("canvas");
+      c.width = Math.round(w * s); c.height = Math.round(h * s);
+      c.getContext("2d").drawImage(src, 0, 0, c.width, c.height);
+      return new Promise(function (res, rej) { c.toBlob(function (b) { b ? res(b) : rej(new Error("Η φωτογραφία δεν διαβάστηκε.")); }, "image/jpeg", 0.82); });
+    };
+    if (window.createImageBitmap) {
+      return createImageBitmap(file, { imageOrientation: "from-image" }).then(function (bmp) { return draw(bmp, bmp.width, bmp.height); })
+        .catch(function () { return viaImg(); });
+    }
+    return viaImg();
+    function viaImg() {
+      return new Promise(function (res, rej) {
+        var url = URL.createObjectURL(file), img = new Image();
+        img.onload = function () { draw(img, img.naturalWidth, img.naturalHeight).then(res, rej); URL.revokeObjectURL(url); };
+        img.onerror = function () { rej(new Error("Αυτό το αρχείο δεν είναι φωτογραφία που διαβάζεται (δοκιμάστε JPG).")); };
+        img.src = url;
+      });
+    }
+  }
+
+  function addFiles(list) {
+    Array.prototype.forEach.call(list, function (file) {
+      if (!/^image\//.test(file.type) && !/\.(jpe?g|png|webp|heic|heif)$/i.test(file.name)) return;
+      var p = { file: file, url: URL.createObjectURL(file) };
+      p.title = el("input", { type: "text", placeholder: "Τίτλος, π.χ. Συρόμενη σε μπαλκόνι", "aria-label": "Τίτλος" });
+      p.loc = el("input", { type: "text", placeholder: "Περιοχή, π.χ. Έδεσσα", "aria-label": "Περιοχή" });
+      p.status = el("span", { class: "status wide", text: "Έτοιμη για ανέβασμα" });
+      p.row = el("div", { class: "row" }, [el("img", { src: p.url, alt: "" }), el("div", { class: "fields" }, [p.title, p.loc, p.status])]);
+      pending.push(p);
+      $("pending").appendChild(p.row);
+    });
+    updateBar();
+  }
+  function updateBar() {
+    var left = pending.filter(function (p) { return !p.done; }).length;
+    $("upload-bar").hidden = !pending.length;
+    $("upload").textContent = left ? "Ανέβασμα " + left + (left === 1 ? " φωτογραφίας" : " φωτογραφιών") : "Ολοκληρώθηκε";
+    $("upload").disabled = !left;
+  }
+  function clearPending() {
+    pending.forEach(function (p) { URL.revokeObjectURL(p.url); });
+    pending = []; $("pending").innerHTML = ""; $("files").value = ""; updateBar();
+  }
+
+  $("files").addEventListener("change", function (e) { addFiles(e.target.files); e.target.value = ""; });
+  var picker = $("picker");
+  ["dragenter", "dragover"].forEach(function (t) { picker.addEventListener(t, function (e) { e.preventDefault(); picker.classList.add("drag"); }); });
+  ["dragleave", "drop"].forEach(function (t) { picker.addEventListener(t, function (e) { e.preventDefault(); picker.classList.remove("drag"); }); });
+  picker.addEventListener("drop", function (e) { if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files); });
+  $("clear").addEventListener("click", clearPending);
+
+  $("upload").addEventListener("click", function () {
+    var todo = pending.filter(function (p) { return !p.done; });
+    var btn = $("upload"); btn.disabled = true; $("clear").disabled = true;
+    var ok = 0;
+    todo.reduce(function (chain, p) {
+      return chain.then(function () {
+        p.status.className = "status wide"; p.status.textContent = "Ανεβαίνει…";
+        return resize(p.file).then(function (blob) {
+          var fd = new FormData();
+          fd.append("file", blob, "erga.jpg");
+          fd.append("title", p.title.value);
+          fd.append("location", p.loc.value);
+          return api("/api/erga", { method: "POST", body: fd });
+        }).then(function () {
+          p.done = true; ok++; p.status.className = "status wide ok"; p.status.textContent = "Ανέβηκε";
+          p.title.disabled = p.loc.disabled = true;
+        }).catch(function (err) {
+          p.status.className = "status wide bad"; p.status.textContent = err.message;
+        });
+      });
+    }, Promise.resolve()).then(function () {
+      $("clear").disabled = false; updateBar();
+      if (ok) { toast(ok === 1 ? "Η φωτογραφία ανέβηκε στο σάιτ" : ok + " φωτογραφίες ανέβηκαν στο σάιτ"); load(); }
+      if (pending.every(function (p) { return p.done; })) setTimeout(clearPending, 1500);
+    });
+  });
+
+  if (token) {
+    api("/api/login").then(function (d) { d.ok ? showApp() : logout(); }).catch(function () { showLogin(); });
+  } else {
+    showLogin();
+  }
+})();
+</script>
+</body>
+</html>

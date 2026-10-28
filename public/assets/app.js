@@ -240,6 +240,12 @@
 
   document.getElementById("year").textContent = new Date().getFullYear();
   getJSON("site.json").then(applySite).catch(function () {});
-  getJSON("gallery.json").then(function (d) { buildCarousel(d.items); }).catch(function () { buildCarousel([]); });
+  // Photos uploaded from /admin come from /api/erga. Until the first upload, the sample photos in data/gallery.json are shown.
+  fetch("/api/erga", { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (d) { if (!d.items || !d.items.length) throw new Error("empty"); return d.items; })
+    .catch(function () { return getJSON("gallery.json").then(function (d) { return d.items; }); })
+    .then(buildCarousel)
+    .catch(function () { buildCarousel([]); });
   getJSON("products.json").then(function (d) { buildProducts(d.items); }).catch(function () { buildProducts([]); });
 })();

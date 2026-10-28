@@ -1,5 +1,9 @@
 [build]
-  publish = "."
+  publish = "public"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
 
 [[headers]]
   for = "/data/*"
@@ -9,4 +13,12 @@
 [[headers]]
   for = "/admin/*"
   [headers.values]
-    X-Robots-Tag = "noindex"
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-cache"
+
+# www -> χωρίς www
+[[redirects]]
+  from = "https://www.mitskas-koufomata.gr/*"
+  to = "https://mitskas-koufomata.gr/:splat"
+  status = 301
+  force = true
