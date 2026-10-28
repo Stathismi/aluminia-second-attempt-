@@ -1,22 +1,8 @@
 {
   "items": [
-    {
-      "image": "images/samples/sample-sliding.svg",
-      "title": "Επάλληλη συρόμενη 2 φύλλων",
-      "location": "Δείγμα έργου",
-      "date": "2026"
-    },
-    {
-      "image": "images/samples/sample-casement.svg",
-      "title": "Δίφυλλο ανοιγόμενο με ανάκλιση",
-      "location": "Δείγμα έργου",
-      "date": "2026"
-    },
-    {
-      "image": "images/samples/sample-door.svg",
-      "title": "Πόρτα εισόδου με πλαϊνό φεγγίτη",
-      "location": "Δείγμα έργου",
-      "date": "2026"
-    }
+    { "image": "images/site/hero.webp", "title": "Κουφώματα αλουμινίου", "location": "", "date": "" },
+    { "image": "images/site/doors.webp", "title": "Μπαλκονόπορτα αλουμινίου", "location": "", "date": "" },
+    { "image": "images/site/security.webp", "title": "Θωρακισμένη πόρτα", "location": "", "date": "" },
+    { "image": "images/site/railings.webp", "title": "Κάγκελα αλουμινίου", "location": "", "date": "" }
   ]
 }

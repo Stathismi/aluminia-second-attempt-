@@ -72,13 +72,13 @@ collections:
         format: json
         fields:
           - { name: business_name, label: "Επωνυμία", widget: string }
-          - { name: tagline, label: "Σύντομη περιγραφή (κάτω από τον τίτλο)", widget: text }
+          - { name: tagline, label: "Κείμενο κάτω από τον τίτλο", widget: text }
           - { name: mobile, label: "Κινητό", widget: string }
           - { name: phone, label: "Σταθερό", widget: string, required: false }
           - { name: email, label: "Email", widget: string }
           - { name: address, label: "Διεύθυνση", widget: string }
           - { name: maps_url, label: "Σύνδεσμος Google Maps", widget: string, required: false }
-          - { name: hours, label: "Ωράριο", widget: string }
-          - { name: service_area, label: "Περιοχές εξυπηρέτησης", widget: string }
+          - { name: hours_weekdays, label: "Ωράριο καθημερινών", widget: string }
+          - { name: hours_saturday, label: "Ωράριο Σαββάτου", widget: string, required: false }
           - { name: facebook, label: "Facebook (σύνδεσμος)", widget: string, required: false }
           - { name: instagram, label: "Instagram (σύνδεσμος)", widget: string, required: false }

@@ -1,13 +1,13 @@
 {
   "business_name": "Μήτσκας Κουφώματα",
-  "tagline": "Κουφώματα αλουμινίου κατά παραγγελία, με μέτρηση και τοποθέτηση από το συνεργείο μας.",
-  "phone": "+30 23810 00000",
-  "mobile": "+30 690 000 0000",
-  "email": "info@mitskas-koufomata.gr",
-  "address": "Σκύδρα Πέλλας, 58500",
-  "maps_url": "https://www.google.com/maps/search/?api=1&query=%CE%A3%CE%BA%CF%8D%CE%B4%CF%81%CE%B1+%CE%A0%CE%AD%CE%BB%CE%BB%CE%B1%CF%82",
-  "hours": "Δευτέρα–Παρασκευή 08:00–16:00, Σάββατο 09:00–13:00",
-  "service_area": "Πέλλα, Ημαθία, Θεσσαλονίκη και γύρω περιοχές",
+  "tagline": "Εξειδικευμένες λύσεις σε κουφώματα αλουμινίου, θωρακισμένες πόρτες και κάγκελα. Εξυπηρετούμε Πέλλα, Σκύδρα και όλη την Κεντρική Μακεδονία.",
+  "mobile": "6948629979",
+  "phone": "2381089377",
+  "email": "alu.mitskas@gmail.com",
+  "address": "Κενέντυ 6, Σκύδρα 58500",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=%CE%9A%CE%B5%CE%BD%CE%AD%CE%BD%CF%84%CF%85+6+%CE%A3%CE%BA%CF%8D%CE%B4%CF%81%CE%B1+58500",
+  "hours_weekdays": "Δευ - Παρ: 08:00 - 21:00",
+  "hours_saturday": "Σάβ: 09:00 - 19:00",
   "facebook": "",
   "instagram": ""
 }
