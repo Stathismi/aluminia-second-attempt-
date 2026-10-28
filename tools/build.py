@@ -20,6 +20,9 @@ from content import SITE, SERVICES, AREAS, AREA_FAQ, HOME_FAQ  # noqa: E402
 ROOT = os.path.join(os.path.dirname(__file__), "..", "public")
 PHONE_MOBILE = "6948629979"
 PHONE_FIXED = "2381089377"
+PHONE_MOBILE2 = "6983159095"
+NAME1 = "Στάθης"
+NAME2 = "Δημήτρης"
 EMAIL = "alu.mitskas@gmail.com"
 ADDRESS = "Κενέντυ 6, Σκύδρα 58500"
 MAPS = "https://www.google.com/maps/search/?api=1&query=%CE%9A%CE%B5%CE%BD%CE%AD%CE%BD%CF%84%CF%85+6+%CE%A3%CE%BA%CF%8D%CE%B4%CF%81%CE%B1+58500"
@@ -101,7 +104,7 @@ def footer():
     <div class="foot-grid">
       <div class="foot-brand">
         <a class="brand" href="/"><span class="brand-mark">M</span><span class="brand-text"><strong>ΜΗΤΣΚΑΣ</strong><span>ΚΟΥΦΩΜΑΤΑ · ΑΠΟ ΤΟ 1976</span></span></a>
-        <p>Κουφώματα αλουμινίου και PVC, θωρακισμένες και εσωτερικές πόρτες, κάγκελα, σίτες, ρολά και επισκευές στην Πέλλα από το 1976. Επίσημοι συνεργάτες EXALCO &amp; ALUMINCO.</p>
+        <p>Κουφώματα αλουμινίου και PVC, θωρακισμένες και εσωτερικές πόρτες, γκαραζόπορτες, κάγκελα, σίτες, ρολά και επισκευές στην Πέλλα από το 1976. Επίσημοι συνεργάτες EXALCO &amp; ALUMINCO.</p>
         <p class="signature">Μήτσκας · από το 1976</p>
       </div>
       <div>
@@ -115,8 +118,9 @@ def footer():
       <div>
         <h4>Επικοινωνία</h4>
         <ul>
-          <li><svg class="i"><use href="#i-phone"/></svg><a data-tel="mobile" href="tel:+30{PHONE_MOBILE}"><span data-site="mobile">{PHONE_MOBILE}</span></a></li>
-          <li><svg class="i"><use href="#i-phone"/></svg><a data-tel="phone" href="tel:+30{PHONE_FIXED}"><span data-site="phone">{PHONE_FIXED}</span></a></li>
+          <li><svg class="i"><use href="#i-phone"/></svg><a data-tel="mobile" href="tel:+30{PHONE_MOBILE}">{NAME1} <span data-site="mobile">{PHONE_MOBILE}</span></a></li>
+          <li><svg class="i"><use href="#i-phone"/></svg><a data-tel="mobile2" href="tel:+30{PHONE_MOBILE2}">{NAME2} <span data-site="mobile2">{PHONE_MOBILE2}</span></a></li>
+          <li><svg class="i"><use href="#i-phone"/></svg><a data-tel="phone" href="tel:+30{PHONE_FIXED}">Σταθερό <span data-site="phone">{PHONE_FIXED}</span></a></li>
           <li><svg class="i"><use href="#i-mail"/></svg><a data-mail="email" href="mailto:{EMAIL}"><span data-site="email">{EMAIL}</span></a></li>
           <li><svg class="i"><use href="#i-pin"/></svg><a href="{MAPS}" target="_blank" rel="noopener"><span data-site="address">{e(ADDRESS)}</span></a></li>
         </ul>
@@ -199,8 +203,9 @@ def contact_section():
         <p>Καλέστε μας ή στείλτε μας τη φόρμα και σας καλούμε εμείς.</p>
       </div>
       <div class="call-row">
-        <a class="btn btn-red btn-lg" data-tel="mobile" href="tel:+30{PHONE_MOBILE}"><svg class="i"><use href="#i-phone"/></svg><span data-site="mobile">{PHONE_MOBILE}</span></a>
-        <a class="btn btn-outline btn-lg" data-tel="phone" href="tel:+30{PHONE_FIXED}"><svg class="i"><use href="#i-phone"/></svg><span data-site="phone">{PHONE_FIXED}</span></a>
+        <a class="btn btn-red btn-lg" data-tel="mobile" href="tel:+30{PHONE_MOBILE}"><svg class="i"><use href="#i-phone"/></svg><span class="who">{NAME1}</span><span data-site="mobile">{PHONE_MOBILE}</span></a>
+        <a class="btn btn-red btn-lg" data-tel="mobile2" href="tel:+30{PHONE_MOBILE2}"><svg class="i"><use href="#i-phone"/></svg><span class="who">{NAME2}</span><span data-site="mobile2">{PHONE_MOBILE2}</span></a>
+        <a class="btn btn-outline btn-lg" data-tel="phone" href="tel:+30{PHONE_FIXED}"><svg class="i"><use href="#i-phone"/></svg><span class="who">Σταθερό</span><span data-site="phone">{PHONE_FIXED}</span></a>
       </div>
       <div class="contact-grid">
         <form class="panel" name="prosfora" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="quote-form">
@@ -248,8 +253,9 @@ def side_card():
           <p class="side-since">Από το 1976</p>
           <h3>Ζητήστε μέτρηση</h3>
           <p>Ερχόμαστε, παίρνουμε μέτρα και σας δίνουμε γραπτή προσφορά.</p>
-          <a class="btn btn-red" data-tel="mobile" href="tel:+30{PHONE_MOBILE}"><svg class="i"><use href="#i-phone"/></svg><span data-site="mobile">{PHONE_MOBILE}</span></a>
-          <a class="btn btn-outline" data-tel="phone" href="tel:+30{PHONE_FIXED}"><svg class="i"><use href="#i-phone"/></svg><span data-site="phone">{PHONE_FIXED}</span></a>
+          <a class="btn btn-red" data-tel="mobile" href="tel:+30{PHONE_MOBILE}"><svg class="i"><use href="#i-phone"/></svg><span class="who">{NAME1}</span><span data-site="mobile">{PHONE_MOBILE}</span></a>
+          <a class="btn btn-red" data-tel="mobile2" href="tel:+30{PHONE_MOBILE2}"><svg class="i"><use href="#i-phone"/></svg><span class="who">{NAME2}</span><span data-site="mobile2">{PHONE_MOBILE2}</span></a>
+          <a class="btn btn-outline" data-tel="phone" href="tel:+30{PHONE_FIXED}"><svg class="i"><use href="#i-phone"/></svg><span class="who">Σταθερό</span><span data-site="phone">{PHONE_FIXED}</span></a>
           <a class="side-link" href="#epikoinonia">ή στείλτε τη φόρμα</a>
           <p class="side-addr"><svg class="i"><use href="#i-pin"/></svg><span data-site="address">{e(ADDRESS)}</span></p>
         </aside>"""
