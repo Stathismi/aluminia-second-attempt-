@@ -1,8 +1,10 @@
 (function () {
   "use strict";
 
+  function $(id) { return document.getElementById(id); }
+
   function getJSON(name) {
-    return fetch("data/" + name + "?v=" + Date.now(), { cache: "no-store" }).then(function (r) {
+    return fetch("/data/" + name + "?v=" + Date.now(), { cache: "no-store" }).then(function (r) {
       if (!r.ok) throw new Error(name + " " + r.status);
       return r.json();
     });
@@ -27,6 +29,11 @@
     u.setAttribute("href", "#" + id);
     s.appendChild(u);
     return s;
+  }
+
+  // lower-case and strip Greek accents, so "Έδεσσα" matches "εδεσσα"
+  function norm(s) {
+    return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
   }
 
   function telHref(v) {
@@ -55,16 +62,25 @@
     });
   }
 
-  /* ---------- projects carousel (data/gallery.json) ---------- */
+  /* ---------- projects carousel ---------- */
   function buildCarousel(items) {
-    var track = document.getElementById("track");
-    var dots = document.getElementById("dots");
-    var prev = document.getElementById("prev");
-    var next = document.getElementById("next");
+    var track = $("track");
+    if (!track) return;
+    var dots = $("dots"), prev = $("prev"), next = $("next");
     items = (items || []).filter(function (i) { return i && i.image; });
+
+    // On area pages show the projects from that area first (if any).
+    var match = (track.getAttribute("data-match") || "").split("|").filter(Boolean).map(norm);
+    if (match.length) {
+      var local = items.filter(function (it) {
+        var hay = norm((it.title || "") + " " + (it.location || ""));
+        return match.some(function (m) { return hay.indexOf(m) >= 0; });
+      });
+      if (local.length) items = local.concat(items.filter(function (it) { return local.indexOf(it) < 0; }));
+    }
+
     track.innerHTML = "";
     dots.innerHTML = "";
-
     if (!items.length) {
       track.replaceWith(el("p", { class: "empty-works", text: "Σύντομα εδώ φωτογραφίες από τα έργα μας." }));
       prev.hidden = next.hidden = true;
@@ -73,8 +89,9 @@
 
     items.forEach(function (it) {
       var meta = [it.location, it.date].filter(Boolean).join(", ");
+      var alt = [it.title || "Έργο κουφωμάτων", it.location].filter(Boolean).join(" - ");
       track.appendChild(el("figure", { class: "work" }, [
-        el("img", { src: it.image, alt: it.title || "Έργο αλουμινίου", loading: "lazy" }),
+        el("img", { src: it.image, alt: alt, loading: "lazy" }),
         (it.title || meta) ? el("figcaption", {}, [
           it.title ? el("strong", { text: it.title }) : null,
           meta ? el("span", { text: meta }) : null
@@ -84,7 +101,6 @@
 
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var timer = null;
-
     function step() {
       var first = track.firstElementChild;
       if (!first) return track.clientWidth;
@@ -109,8 +125,7 @@
         }
       }
       Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute("aria-current", k === i ? "true" : "false"); });
-      var hide = n < 2;
-      prev.hidden = next.hidden = dots.hidden = hide;
+      prev.hidden = next.hidden = dots.hidden = n < 2;
     }
     function go(i) {
       var n = pages();
@@ -137,14 +152,13 @@
   }
 
   /* ---------- products catalogue (data/products.json) ---------- */
-  var setCategory = function () {};
-
   function buildProducts(items) {
-    var chips = document.getElementById("chips");
-    var cat = document.getElementById("catalogue");
-    var q = document.getElementById("q");
+    var cat = $("catalogue");
+    if (!cat) return;
+    var chips = $("chips"), q = $("q");
     var ALL = "Όλα";
-    items = items || [];
+    var only = (cat.getAttribute("data-categories") || "").split("|").filter(Boolean);
+    items = (items || []).filter(function (p) { return !only.length || only.indexOf(p.category) >= 0; });
     var cats = [];
     items.forEach(function (p) { if (p.category && cats.indexOf(p.category) < 0) cats.push(p.category); });
     var active = ALL;
@@ -166,7 +180,7 @@
         : el("div", { class: "product-img ph" }, [icon("i-window")]);
       var ask = el("a", { class: "btn btn-outline", href: "#epikoinonia", text: "Ζητήστε προσφορά" });
       ask.addEventListener("click", function () {
-        var f = document.getElementById("f-code");
+        var f = $("f-code");
         if (f) f.value = p.code || p.name || "";
       });
       return el("article", { class: "product" }, [
@@ -185,13 +199,15 @@
     }
 
     function render() {
-      chips.innerHTML = "";
-      [ALL].concat(cats).forEach(function (c) { chips.appendChild(chip(c)); });
-      var term = (q.value || "").trim().toLowerCase();
+      if (chips) {
+        chips.innerHTML = "";
+        if (cats.length > 1) [ALL].concat(cats).forEach(function (c) { chips.appendChild(chip(c)); });
+      }
+      var term = q ? norm(q.value.trim()) : "";
       var list = items.filter(function (p) {
         if (active !== ALL && p.category !== active) return false;
         if (!term) return true;
-        return [p.code, p.name, p.category, p.description].join(" ").toLowerCase().indexOf(term) >= 0;
+        return norm([p.code, p.name, p.category, p.description].join(" ")).indexOf(term) >= 0;
       });
       cat.innerHTML = "";
       if (!list.length) {
@@ -201,23 +217,22 @@
       list.forEach(function (p) { cat.appendChild(card(p)); });
     }
 
-    setCategory = function (name) {
-      active = cats.indexOf(name) >= 0 ? name : ALL;
-      q.value = "";
-      render();
-    };
-    q.addEventListener("input", render);
+    if (q) q.addEventListener("input", render);
     render();
   }
 
-  document.querySelectorAll("[data-filter]").forEach(function (a) {
-    a.addEventListener("click", function () { setCategory(a.getAttribute("data-filter")); });
+  /* ---------- menus: close dropdowns on outside click / link click ---------- */
+  document.addEventListener("click", function (e) {
+    document.querySelectorAll("details.dd[open], details.mnav[open]").forEach(function (d) {
+      if (!d.contains(e.target) || e.target.closest("a")) d.removeAttribute("open");
+    });
   });
 
   /* ---------- quote form (Netlify Forms) ---------- */
-  var form = document.getElementById("quote-form");
-  var status = document.getElementById("form-status");
+  var form = $("quote-form");
+  var status = $("form-status");
   if (form) {
+    if (form.elements.page) form.elements.page.value = location.pathname;
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       status.className = "form-status";
@@ -229,6 +244,7 @@
       }).then(function (r) {
         if (!r.ok) throw new Error(r.status);
         form.reset();
+        if (form.elements.page) form.elements.page.value = location.pathname;
         status.className = "form-status ok";
         status.textContent = "Το αίτημα στάλθηκε. Θα σας καλέσουμε σύντομα.";
       }).catch(function () {
@@ -238,14 +254,19 @@
     });
   }
 
-  document.getElementById("year").textContent = new Date().getFullYear();
+  if ($("year")) $("year").textContent = new Date().getFullYear();
   getJSON("site.json").then(applySite).catch(function () {});
-  // Photos uploaded from /admin come from /api/erga. Until the first upload, the sample photos in data/gallery.json are shown.
-  fetch("/api/erga", { cache: "no-store" })
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function (d) { if (!d.items || !d.items.length) throw new Error("empty"); return d.items; })
-    .catch(function () { return getJSON("gallery.json").then(function (d) { return d.items; }); })
-    .then(buildCarousel)
-    .catch(function () { buildCarousel([]); });
-  getJSON("products.json").then(function (d) { buildProducts(d.items); }).catch(function () { buildProducts([]); });
+
+  if ($("track")) {
+    // Photos uploaded from /admin come from /api/erga; until the first upload the samples in data/gallery.json are shown.
+    fetch("/api/erga", { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (d) { if (!d.items || !d.items.length) throw new Error("empty"); return d.items; })
+      .catch(function () { return getJSON("gallery.json").then(function (d) { return d.items; }); })
+      .then(buildCarousel)
+      .catch(function () { buildCarousel([]); });
+  }
+  if ($("catalogue")) {
+    getJSON("products.json").then(function (d) { buildProducts(d.items); }).catch(function () { buildProducts([]); });
+  }
 })();

@@ -1,8 +1,8 @@
 {
   "items": [
-    { "image": "images/site/hero.webp", "title": "Κουφώματα αλουμινίου", "location": "", "date": "" },
-    { "image": "images/site/doors.webp", "title": "Μπαλκονόπορτα αλουμινίου", "location": "", "date": "" },
-    { "image": "images/site/security.webp", "title": "Θωρακισμένη πόρτα", "location": "", "date": "" },
-    { "image": "images/site/railings.webp", "title": "Κάγκελα αλουμινίου", "location": "", "date": "" }
+    { "image": "/images/site/hero.webp", "title": "Κουφώματα αλουμινίου", "location": "", "date": "" },
+    { "image": "/images/site/doors.webp", "title": "Μπαλκονόπορτα αλουμινίου", "location": "", "date": "" },
+    { "image": "/images/site/security.webp", "title": "Θωρακισμένη πόρτα", "location": "", "date": "" },
+    { "image": "/images/site/railings.webp", "title": "Κάγκελα αλουμινίου", "location": "", "date": "" }
   ]
 }
