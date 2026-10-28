@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Μήτσκας Κουφώματα</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Κουφώματα αλουμινίου κατά παραγγελία στη Σκύδρα Πέλλας: ανοιγόμενα, συρόμενα, πόρτες εισόδου, ρολά, σίτες, κάγκελα και πέργκολες. Μέτρηση, κατασκευή και τοποθέτηση.">
+<meta property="og:title" content="Μήτσκας Κουφώματα">
+<meta property="og:description" content="Κουφώματα αλουμινίου κατά παραγγελία στη Σκύδρα Πέλλας.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,600..800&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Μήτσκας Κουφώματα, αρχή σελίδας">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="8" style="fill:var(--ink)"/><rect x="12" y="12" width="40" height="40" style="fill:none;stroke:var(--surface);stroke-width:5"/><line x1="32" y1="12" x2="32" y2="52" style="stroke:var(--surface);stroke-width:5"/><rect x="16" y="16" width="13" height="33" style="fill:var(--accent)"/></svg>
+      <span data-site="business_name">Μήτσκας Κουφώματα</span>
+    </a>
+    <nav class="nav" aria-label="Κύριο μενού">
+      <a href="#erga">Έργα</a>
+      <a href="#proionta">Προϊόντα</a>
+      <a href="#diadikasia">Πώς δουλεύουμε</a>
+      <a href="#epikoinonia">Επικοινωνία</a>
+    </nav>
+    <a class="header-phone" data-site-tel="mobile" href="tel:+306900000000"><span data-site="mobile">+30 690 000 0000</span></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" id="erga" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-text">
+        <h1 id="hero-title">Κουφώματα αλουμινίου, μετρημένα στο χιλιοστό.</h1>
+        <p class="lead" data-site="tagline">Κουφώματα αλουμινίου κατά παραγγελία, με μέτρηση και τοποθέτηση από το συνεργείο μας.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#epikoinonia">Ζητήστε προσφορά</a>
+          <a class="btn btn-ghost" href="#proionta">Δείτε τα προϊόντα</a>
+        </div>
+        <div class="hero-meta">
+          <span data-site="address">Σκύδρα Πέλλας, 58500</span>
+          <span>Εξυπηρετούμε: <span data-site="service_area">Πέλλα, Ημαθία, Θεσσαλονίκη και γύρω περιοχές</span></span>
+        </div>
+      </div>
+
+      <div class="carousel" aria-roledescription="carousel" aria-label="Οι δουλειές μας">
+        <div class="carousel-frame">
+          <div class="slides" id="slides" tabindex="0" aria-live="polite">
+            <div class="empty-gallery"><strong>Οι δουλειές μας</strong><span>Οι φωτογραφίες φορτώνουν…</span></div>
+          </div>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="prev" type="button" aria-label="Προηγούμενη φωτογραφία">&#8249;</button>
+          <button class="carousel-btn" id="next" type="button" aria-label="Επόμενη φωτογραφία">&#8250;</button>
+          <div class="dots" id="dots" role="group" aria-label="Επιλογή φωτογραφίας"></div>
+          <span class="counter" id="counter"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="proionta" aria-labelledby="products-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="products-title">Προϊόντα και κωδικοί</h2>
+        <p class="lead">Κάθε προϊόν έχει δικό του κωδικό. Πείτε μας τον κωδικό στο τηλέφωνο ή στη φόρμα και ξέρουμε αμέσως τι χρειάζεστε.</p>
+      </div>
+      <div class="toolbar">
+        <div class="chips" id="chips" role="group" aria-label="Κατηγορίες"></div>
+        <label class="search" for="q">
+          <input id="q" aria-label="Αναζήτηση προϊόντος" type="search" placeholder="Αναζήτηση με κωδικό ή όνομα, π.χ. MK-SR" autocomplete="off">
+        </label>
+      </div>
+      <div class="catalogue" id="catalogue"></div>
+    </div>
+  </section>
+
+  <section class="section" id="diadikasia" aria-labelledby="process-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="process-title">Πώς δουλεύουμε</h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Μέτρηση στο χώρο</h3><p>Ερχόμαστε, παίρνουμε διαστάσεις και βλέπουμε τα ανοίγματα και τα υπάρχοντα κουφώματα.</p></li>
+        <li><h3>Προσφορά</h3><p>Γραπτή προσφορά ανά άνοιγμα, με κωδικό προϊόντος, χρώμα RAL και τζάμι.</p></li>
+        <li><h3>Κατασκευή</h3><p>Κόβουμε και συναρμολογούμε τα κουφώματα στο εργαστήριό μας στη Σκύδρα.</p></li>
+        <li><h3>Τοποθέτηση</h3><p>Το συνεργείο μας τοποθετεί, στεγανοποιεί και ρυθμίζει, και καθαρίζει μετά τη δουλειά.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section band" id="epikoinonia" aria-labelledby="contact-title">
+    <div class="wrap contact-grid">
+      <div class="details">
+        <div class="section-head">
+          <h2 id="contact-title">Ζητήστε προσφορά</h2>
+          <p class="lead">Στείλτε μας διαστάσεις ή φωτογραφίες των ανοιγμάτων και σας καλούμε.</p>
+        </div>
+        <dl>
+          <div><dt>Κινητό</dt><dd class="mono"><a data-site-tel="mobile" href="tel:+306900000000"><span data-site="mobile">+30 690 000 0000</span></a></dd></div>
+          <div><dt>Σταθερό</dt><dd class="mono"><a data-site-tel="phone" href="tel:+302381000000"><span data-site="phone">+30 23810 00000</span></a></dd></div>
+          <div><dt>Email</dt><dd><a data-site-mail="email" href="mailto:info@mitskas-koufomata.gr"><span data-site="email">info@mitskas-koufomata.gr</span></a></dd></div>
+          <div><dt>Εργαστήριο</dt><dd><span data-site="address">Σκύδρα Πέλλας, 58500</span><br><a data-site-href="maps_url" href="#" target="_blank" rel="noopener">Άνοιγμα στο Google Maps</a></dd></div>
+          <div><dt>Ωράριο</dt><dd data-site="hours">Δευτέρα–Παρασκευή 08:00–16:00, Σάββατο 09:00–13:00</dd></div>
+        </dl>
+      </div>
+
+      <form name="prosfora" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="quote-form">
+        <input type="hidden" name="form-name" value="prosfora">
+        <p class="hp"><label>Μην το συμπληρώσετε <input name="bot-field" id="bot-field"></label></p>
+        <div class="row">
+          <label for="f-name">Ονοματεπώνυμο<input id="f-name" name="name" required autocomplete="name"></label>
+          <label for="f-phone">Τηλέφωνο<input id="f-phone" name="phone" type="tel" required autocomplete="tel"></label>
+        </div>
+        <div class="row">
+          <label for="f-email">Email<input id="f-email" name="email" type="email" autocomplete="email"></label>
+          <label for="f-code">Κωδικός προϊόντος<input id="f-code" name="product_code" placeholder="π.χ. MK-SR-01"></label>
+        </div>
+        <label for="f-area">Περιοχή<input id="f-area" name="area" placeholder="π.χ. Γιαννιτσά"></label>
+        <label for="f-msg">Τι χρειάζεστε<textarea id="f-msg" name="message" placeholder="Πόσα ανοίγματα, περίπου διαστάσεις, χρώμα…"></textarea></label>
+        <button class="btn btn-primary" type="submit">Αποστολή αιτήματος</button>
+        <p class="form-status" id="form-status" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year">2026</span> <span data-site="business_name">Μήτσκας Κουφώματα</span></span>
+    <span>mitskas-koufomata.gr</span>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

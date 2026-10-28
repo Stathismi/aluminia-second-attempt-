@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "image": "images/samples/sample-sliding.svg",
+      "title": "Επάλληλη συρόμενη 2 φύλλων",
+      "location": "Δείγμα έργου",
+      "date": "2026"
+    },
+    {
+      "image": "images/samples/sample-casement.svg",
+      "title": "Δίφυλλο ανοιγόμενο με ανάκλιση",
+      "location": "Δείγμα έργου",
+      "date": "2026"
+    },
+    {
+      "image": "images/samples/sample-door.svg",
+      "title": "Πόρτα εισόδου με πλαϊνό φεγγίτη",
+      "location": "Δείγμα έργου",
+      "date": "2026"
+    }
+  ]
+}
