@@ -73,8 +73,8 @@ def header():
         <summary>Υπηρεσίες<svg class="i"><use href="#i-down"/></svg></summary>
         <div class="dd-panel">{service_links()}</div>
       </details>
-      <a href="/#proionta">Κωδικοί</a>
       <a href="/#erga">Έργα</a>
+      <a href="/#proionta">Κωδικοί</a>
       <a href="/#perioxes">Περιοχές</a>
       <a href="/#epikoinonia">Επικοινωνία</a>
     </nav>
@@ -87,7 +87,7 @@ def header():
           <p class="mnav-title">Υπηρεσίες</p>
           {service_links()}
           <p class="mnav-title">Σελίδα</p>
-          <a href="/#proionta">Κωδικοί προϊόντων</a><a href="/#erga">Έργα</a><a href="/#perioxes">Περιοχές</a><a href="/#epikoinonia">Επικοινωνία</a>
+          <a href="/#erga">Έργα</a><a href="/#proionta">Κωδικοί προϊόντων</a><a href="/#perioxes">Περιοχές</a><a href="/#epikoinonia">Επικοινωνία</a>
         </div>
       </details>
     </div>
@@ -255,10 +255,11 @@ def side_card():
         </aside>"""
 
 
-def works_section(match=None, town=None):
+def works_section(match=None, town=None, alt=False):
     attr = f' data-match="{e("|".join(match))}"' if match else ""
     title = f"Έργα μας {e(town)}" if town else "Τα Έργα Μας"
-    return f"""<section class="section" id="erga" aria-labelledby="works-title">
+    cls = "section alt" if alt else "section"
+    return f"""<section class="{cls}" id="erga" aria-labelledby="works-title">
     <div class="wrap">
       <div class="section-head"><span class="kicker">Portfolio</span><h2 id="works-title">{title}</h2></div>
       <div class="carousel" aria-roledescription="carousel" aria-label="Έργα">
@@ -274,7 +275,7 @@ def works_section(match=None, town=None):
 
 
 def catalogue_section(categories, name):
-    return f"""<section class="section alt" id="proionta" aria-labelledby="products-title">
+    return f"""<section class="section" id="proionta" aria-labelledby="products-title">
     <div class="wrap">
       <div class="section-head"><span class="kicker">Κωδικοί</span><h2 id="products-title">{e(name)}: προϊόντα και κωδικοί</h2>
         <p>Πείτε μας τον κωδικό στο τηλέφωνο ή στη φόρμα και ξέρουμε αμέσως τι χρειάζεστε.</p></div>
@@ -339,8 +340,8 @@ def service_page(s):
       {side_card()}
     </div>
   </section>
+  {works_section(alt=True)}
   {catalogue_section(s["categories"], s["name"]) if s["categories"] else ""}
-  {works_section()}
   {faq_section(s["faq"])}
   {links_section(s["slug"])}
   {contact_section()}"""
@@ -373,7 +374,7 @@ def area_page(a):
       {side_card()}
     </div>
   </section>
-  {works_section(a["match"], a["in_town"])}
+  {works_section(a["match"], a["in_town"], alt=True)}
   {faq_section(faq)}
   {links_section(a["slug"])}
   {contact_section()}"""
