@@ -2,6 +2,12 @@
 // index  -> JSON array [{ id, title, location, date, created }]
 // img/ID -> image bytes, metadata { contentType }
 import { verifyToken, tokenFrom, json } from "./auth.mjs";
+import { makeThumb } from "./thumb.mjs";
+
+const LONG_CACHE = {
+  "cache-control": "public, max-age=31536000, immutable",
+  "netlify-cdn-cache-control": "public, max-age=31536000, immutable, durable"
+};
 
 const MAX_BYTES = 5 * 1024 * 1024;
 const TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -20,7 +26,8 @@ async function readIndex(store) {
 }
 
 function publicItem(it) {
-  return { id: it.id, image: "/api/img/" + it.id, title: it.title, location: it.location, date: it.date };
+  // "image" is the small version used by the carousel; "full" is the original upload
+  return { id: it.id, image: "/api/thumb/" + it.id, full: "/api/img/" + it.id, title: it.title, location: it.location, date: it.date };
 }
 
 export async function handleErga(req, store) {
@@ -46,6 +53,15 @@ export async function handleErga(req, store) {
 
     const id = newId();
     await store.set("img/" + id, bytes, { metadata: { contentType: type } });
+    // small version: sent by the admin page, or made here from the upload
+    const thumbFile = form.get("thumb");
+    let thumb = null;
+    if (thumbFile && typeof thumbFile.arrayBuffer === "function") {
+      const tb = await thumbFile.arrayBuffer();
+      if (tb.byteLength > 0 && tb.byteLength <= MAX_BYTES) thumb = tb;
+    }
+    if (!thumb) { try { thumb = makeThumb(bytes); } catch (e) { thumb = null; } }
+    if (thumb) await store.set("thumb/" + id, thumb, { metadata: { contentType: "image/jpeg" } });
     const item = {
       id,
       title: clean(form.get("title")),
@@ -89,6 +105,7 @@ export async function handleErga(req, store) {
     if (next.length === list.length) return json({ error: "Η φωτογραφία δεν βρέθηκε." }, 404);
     await store.setJSON("index", next);
     await store.delete("img/" + id);
+    await store.delete("thumb/" + id);
     return json({ ok: true });
   }
 
@@ -100,9 +117,22 @@ export async function handleImage(id, store) {
   const res = await store.getWithMetadata("img/" + id, { type: "arrayBuffer" });
   if (!res || !res.data) return new Response("Not found", { status: 404 });
   return new Response(res.data, {
-    headers: {
-      "content-type": (res.metadata && res.metadata.contentType) || "image/jpeg",
-      "cache-control": "public, max-age=31536000, immutable"
-    }
+    headers: { "content-type": (res.metadata && res.metadata.contentType) || "image/jpeg", ...LONG_CACHE }
   });
+}
+
+// Small version for the carousel. Made once on first request for older uploads, then stored.
+export async function handleThumb(id, store) {
+  if (!id || !/^[a-z0-9]+$/.test(id)) return new Response("Not found", { status: 404 });
+  const have = await store.getWithMetadata("thumb/" + id, { type: "arrayBuffer" });
+  if (have && have.data) {
+    return new Response(have.data, { headers: { "content-type": "image/jpeg", ...LONG_CACHE } });
+  }
+  const full = await store.getWithMetadata("img/" + id, { type: "arrayBuffer" });
+  if (!full || !full.data) return new Response("Not found", { status: 404 });
+  let thumb = null;
+  try { thumb = makeThumb(full.data); } catch (e) { thumb = null; }
+  if (!thumb) return handleImage(id, store); // not a JPEG: serve the original
+  await store.set("thumb/" + id, thumb, { metadata: { contentType: "image/jpeg" } });
+  return new Response(thumb, { headers: { "content-type": "image/jpeg", ...LONG_CACHE } });
 }
