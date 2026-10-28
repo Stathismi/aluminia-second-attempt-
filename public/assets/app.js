@@ -71,6 +71,12 @@
     if (!counter) { counter = el("span", { id: "works-count", class: "works-count" }); counter.hidden = true; dots.after(counter); }
     items = (items || []).filter(function (i) { return i && i.image; });
 
+    // Random order on every visit (Fisher–Yates shuffle).
+    for (var r = items.length - 1; r > 0; r--) {
+      var j = Math.floor(Math.random() * (r + 1));
+      var tmp = items[r]; items[r] = items[j]; items[j] = tmp;
+    }
+
     // On area pages show the projects from that area first (if any).
     var match = (track.getAttribute("data-match") || "").split("|").filter(Boolean).map(norm);
     if (match.length) {
