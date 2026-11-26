@@ -245,6 +245,58 @@
     });
   });
 
+  /* ---------- analytics (GA4, only after consent) ---------- */
+  // Set "ga4_id" (e.g. G-XXXXXXX) in data/site.json to turn it on.
+  var CONSENT_KEY = "mk-consent";
+  function getConsent() { try { return localStorage.getItem(CONSENT_KEY); } catch (e) { return null; } }
+  function setConsent(v) { try { localStorage.setItem(CONSENT_KEY, v); } catch (e) {} }
+  function track(name, params) {
+    if (typeof window.gtag === "function") window.gtag("event", name, params || {});
+  }
+  function loadGA(id) {
+    if (!id || window.__gaLoaded) return;
+    window.__gaLoaded = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag("js", new Date());
+    window.gtag("config", id, { anonymize_ip: true });
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(id);
+    document.head.appendChild(s);
+  }
+  function setupAnalytics(site) {
+    var id = site && site.ga4_id;
+    if (!id) return;
+    var c = getConsent();
+    if (c === "yes") { loadGA(id); return; }
+    if (c === "no") return;
+    var box = el("div", { class: "consent", role: "dialog", "aria-label": "Cookies" });
+    box.innerHTML = '<p>Χρησιμοποιούμε cookies στατιστικών (Google Analytics) για να δούμε πώς χρησιμοποιείται το σάιτ. Τα αποδέχεστε;</p>' +
+      '<div class="row"><button type="button" class="no">Όχι</button><button type="button" class="ok">Αποδοχή</button></div>';
+    document.body.appendChild(box);
+    box.querySelector(".ok").addEventListener("click", function () { setConsent("yes"); box.remove(); loadGA(id); });
+    box.querySelector(".no").addEventListener("click", function () { setConsent("no"); box.remove(); });
+  }
+  // Count calls, Viber, WhatsApp and e-mail clicks as events.
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!a) return;
+    var h = a.getAttribute("href") || "";
+    if (h.indexOf("tel:") === 0) track("click_call", { number: h.slice(4), page: location.pathname });
+    else if (h.indexOf("viber:") === 0) track("click_viber", { page: location.pathname });
+    else if (h.indexOf("https://wa.me/") === 0) track("click_whatsapp", { page: location.pathname });
+    else if (h.indexOf("mailto:") === 0) track("click_email", { page: location.pathname });
+  });
+
+  // Netlify Forms needs "form-name" in the posted data; Netlify strips the hidden
+  // input from the served HTML, so add it here.
+  function formBody(f) {
+    var p = new URLSearchParams(new FormData(f));
+    if (!p.get("form-name")) p.set("form-name", f.getAttribute("name") || "prosfora");
+    return p.toString();
+  }
+
   /* ---------- quote form (Netlify Forms) ---------- */
   var form = $("quote-form");
   var status = $("form-status");
@@ -257,9 +309,10 @@
       fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(new FormData(form)).toString()
+        body: formBody(form)
       }).then(function (r) {
         if (!r.ok) throw new Error(r.status);
+        track("generate_lead", { form: "prosfora", page: location.pathname });
         form.reset();
         if (form.elements.page) form.elements.page.value = location.pathname;
         status.className = "form-status ok";
@@ -272,7 +325,7 @@
   }
 
   if ($("year")) $("year").textContent = new Date().getFullYear();
-  getJSON("site.json").then(applySite).catch(function () {});
+  getJSON("site.json").then(function (site) { applySite(site); setupAnalytics(site); }).catch(function () {});
 
   if ($("track")) {
     // Photos uploaded from /admin come from /api/erga; until the first upload the samples in data/gallery.json are shown.

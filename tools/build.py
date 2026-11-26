@@ -25,7 +25,7 @@ NAME1 = "Στάθης"
 NAME2 = "Δημήτρης"
 EMAIL = "alu.mitskas@gmail.com"
 ADDRESS = "Κενέντυ 6, Σκύδρα 58500"
-MAPS = "https://www.google.com/maps/search/?api=1&query=%CE%9A%CE%B5%CE%BD%CE%AD%CE%BD%CF%84%CF%85+6+%CE%A3%CE%BA%CF%8D%CE%B4%CF%81%CE%B1+58500"
+MAPS = "https://www.google.com/maps/place/?q=place_id:ChIJGdKbKhG5VxMRe4xwa2JCIUc"
 BUSINESS_ID = SITE + "/#business"
 
 e = html.escape
@@ -128,6 +128,12 @@ def footer():
     </div>
     <p class="copy">© <span id="year">2026</span> Μήτσκας Κουφώματα · Από το 1976. Με επιφύλαξη παντός δικαιώματος.</p>
   </div>
+  <nav class="mbar" aria-label="Γρήγορη επικοινωνία">
+    <a class="mbar-call" data-tel="mobile" data-track="call" href="tel:+30{PHONE_MOBILE}"><svg class="i"><use href="#i-phone"/></svg>Κλήση</a>
+    <a class="mbar-viber" data-track="viber" href="viber://chat?number=%2B30{PHONE_MOBILE}">Viber</a>
+    <a class="mbar-wa" data-track="whatsapp" href="https://wa.me/30{PHONE_MOBILE}" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="mbar-quote" href="#epikoinonia">Προσφορά</a>
+  </nav>
 </footer>"""
 
 
@@ -140,7 +146,6 @@ def head(title, description, path, image="/images/site/hero.webp", extra_ld=()):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{e(title)}</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="{e(description)}">
 <link rel="canonical" href="{url}">
 <meta property="og:title" content="{e(title)}">

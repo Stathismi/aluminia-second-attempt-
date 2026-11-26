@@ -6,9 +6,10 @@
   "phone": "2381089377",
   "email": "alu.mitskas@gmail.com",
   "address": "Κενέντυ 6, Σκύδρα 58500",
-  "maps_url": "https://www.google.com/maps/search/?api=1&query=%CE%9A%CE%B5%CE%BD%CE%AD%CE%BD%CF%84%CF%85+6+%CE%A3%CE%BA%CF%8D%CE%B4%CF%81%CE%B1+58500",
+  "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJGdKbKhG5VxMRe4xwa2JCIUc",
   "hours_weekdays": "Δευ - Παρ: 08:00 - 21:00",
   "hours_saturday": "Σάβ: 09:00 - 19:00",
   "facebook": "",
-  "instagram": ""
+  "instagram": "",
+  "ga4_id": ""
 }
