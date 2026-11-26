@@ -131,7 +131,6 @@ def footer():
   <nav class="mbar" aria-label="Γρήγορη επικοινωνία">
     <a class="mbar-call" data-tel="mobile" data-track="call" href="tel:+30{PHONE_MOBILE}"><svg class="i"><use href="#i-phone"/></svg>Κλήση</a>
     <a class="mbar-viber" data-track="viber" href="viber://chat?number=%2B30{PHONE_MOBILE}">Viber</a>
-    <a class="mbar-wa" data-track="whatsapp" href="https://wa.me/30{PHONE_MOBILE}" target="_blank" rel="noopener">WhatsApp</a>
     <a class="mbar-quote" href="#epikoinonia">Προσφορά</a>
   </nav>
 </footer>"""

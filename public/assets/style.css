@@ -323,11 +323,10 @@ footer li { display: flex; gap: 10px; align-items: center; }
 /* ---------- mobile contact bar ---------- */
 .mbar { display: none; }
 @media (max-width: 760px) {
-  .mbar { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: var(--navy-deep); padding: 8px max(8px, env(safe-area-inset-left, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)); gap: 6px; box-shadow: 0 -4px 16px rgba(0,0,0,.18); }
+  .mbar { display: grid; grid-template-columns: 1.3fr 1fr 1fr; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: var(--navy-deep); padding: 8px max(8px, env(safe-area-inset-left, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)); gap: 6px; box-shadow: 0 -4px 16px rgba(0,0,0,.18); }
   .mbar a { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; border-radius: 10px; color: #fff; text-decoration: none; font-weight: 600; font-size: 13.5px; padding: 0 4px; background: rgba(255,255,255,.1); }
   .mbar a.mbar-call { background: var(--red); }
   .mbar a.mbar-viber { background: #7360F2; }
-  .mbar a.mbar-wa { background: #1FA855; }
   .mbar .i { width: 18px; height: 18px; }
   body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
 }

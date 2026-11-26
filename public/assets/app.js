@@ -278,14 +278,13 @@
     box.querySelector(".ok").addEventListener("click", function () { setConsent("yes"); box.remove(); loadGA(id); });
     box.querySelector(".no").addEventListener("click", function () { setConsent("no"); box.remove(); });
   }
-  // Count calls, Viber, WhatsApp and e-mail clicks as events.
+  // Count calls, Viber and e-mail clicks as events.
   document.addEventListener("click", function (e) {
     var a = e.target.closest && e.target.closest("a[href]");
     if (!a) return;
     var h = a.getAttribute("href") || "";
     if (h.indexOf("tel:") === 0) track("click_call", { number: h.slice(4), page: location.pathname });
     else if (h.indexOf("viber:") === 0) track("click_viber", { page: location.pathname });
-    else if (h.indexOf("https://wa.me/") === 0) track("click_whatsapp", { page: location.pathname });
     else if (h.indexOf("mailto:") === 0) track("click_email", { page: location.pathname });
   });
 
